@@ -1,4 +1,9 @@
 class CartolaDataBackupController < ApplicationController
+  def initialize
+    round_data
+    club_data
+  end
+
   def round_data
     rounds = File.read('vendor/rodadas.json')
     rounds_backup(rounds)
