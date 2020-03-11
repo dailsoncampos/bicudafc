@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_11_045757) do
+ActiveRecord::Schema.define(version: 2020_03_11_231207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,25 @@ ActiveRecord::Schema.define(version: 2020_03_11_045757) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "matches", force: :cascade do |t|
+    t.integer "id_match"
+    t.integer "home_club_id"
+    t.integer "position_home_club"
+    t.integer "away_club_id"
+    t.integer "position_away_club"
+    t.datetime "date"
+    t.string "location"
+    t.boolean "match_validate"
+    t.integer "score_home_club"
+    t.integer "score_away_club"
+    t.text "performance_home_club"
+    t.text "performance_away_club"
+    t.bigint "round_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["round_id"], name: "index_matches_on_round_id"
+  end
+
   create_table "rounds", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
@@ -35,4 +54,5 @@ ActiveRecord::Schema.define(version: 2020_03_11_045757) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "matches", "rounds"
 end
