@@ -10,49 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_11_231207) do
+ActiveRecord::Schema.define(version: 0) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "clubs", force: :cascade do |t|
-    t.integer "id_club"
-    t.string "name"
-    t.string "abbreviation"
-    t.integer "position"
-    t.string "fantasy_name"
-    t.string "shield_30x30"
-    t.string "shield_45x45"
-    t.string "shield_60x60"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "matches", force: :cascade do |t|
-    t.integer "id_match"
-    t.integer "home_club_id"
-    t.integer "position_home_club"
-    t.integer "away_club_id"
-    t.integer "position_away_club"
-    t.datetime "date"
-    t.string "location"
-    t.boolean "match_validate"
-    t.integer "score_home_club"
-    t.integer "score_away_club"
-    t.text "performance_home_club"
-    t.text "performance_away_club"
-    t.bigint "round_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["round_id"], name: "index_matches_on_round_id"
-  end
-
-  create_table "rounds", force: :cascade do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_foreign_key "matches", "rounds"
 end
