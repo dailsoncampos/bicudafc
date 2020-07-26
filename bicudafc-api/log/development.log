@@ -303,3 +303,5 @@ Migrating to CreateClubs (20200311045757)
   [1m[36mClub Load (0.7ms)[0m  [1m[34mSELECT  "clubs".* FROM "clubs" LIMIT $1[0m  [["LIMIT", 11]]
   [1m[35m (0.9ms)[0m  [1m[34mSELECT "clubs"."name" FROM "clubs" ORDER BY "clubs"."position" ASC[0m
   [1m[36mClub Load (0.6ms)[0m  [1m[34mSELECT  "clubs".* FROM "clubs" ORDER BY "clubs"."id_club" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (2.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "rounds"[0m
+  [1m[36mRound Load (0.4ms)[0m  [1m[34mSELECT  "rounds".* FROM "rounds" ORDER BY "rounds"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
