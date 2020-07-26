@@ -1,2 +1,0 @@
-class Round < ApplicationRecord
-end
