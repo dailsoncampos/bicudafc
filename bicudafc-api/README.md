@@ -1,24 +1,3 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+BicudaFC é uma plataforma web que auxilia na tomada de decisões na escalção de times dos usuários do Fantasy Game CartolaFC, apresentando dados dos atletas de clubes da Série A do Campeonato Brasileiro de Futebol, com base na API disponibilizada pela plataforma do CartolaFC.
