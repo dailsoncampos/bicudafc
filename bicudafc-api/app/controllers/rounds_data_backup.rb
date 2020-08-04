@@ -24,6 +24,7 @@ class RoundsDataBackup
   end
 
   def make_directory(round)
-    Dir.mkdir "#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}" unless File.directory?("#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}")
+    directory_by_round = "#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}"
+    Dir.mkdir directory_by_round unless File.directory?(directory_by_round)
   end
 end
