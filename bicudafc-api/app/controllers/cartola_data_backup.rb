@@ -33,7 +33,7 @@ class CartolaDataBackup < ApplicationController
     current_file = File.read(current_path)
     new_file = File.read(new_path)
 
-    delete_rename_file(current_path, new_path) unless current_file != new_file
+    delete_rename_file(current_path, new_path) unless current_file == new_file
   end
 
   def delete_rename_file(old_path, new_path)
