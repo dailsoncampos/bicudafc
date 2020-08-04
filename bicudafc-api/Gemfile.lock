@@ -158,6 +158,9 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    simple_scheduler (1.2.0)
+      rails (>= 5.0)
+      sidekiq (>= 5.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -198,6 +201,7 @@ DEPENDENCIES
   redis (~> 4.0)
   rspec-rails (~> 3.9.0)
   sidekiq
+  simple_scheduler
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
