@@ -19,9 +19,6 @@ gem 'redis', '~> 4.0'
 # Simple, efficient background processing for Ruby.
 gem 'sidekiq'
 
-# Simple Scheduler is a scheduling add-on that is designed to be used with Sidekiq and Heroku Scheduler
-gem "simple_scheduler"
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
