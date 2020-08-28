@@ -1,7 +1,7 @@
 /log/
 /log/development.log
-/tmp/*
+!/tmp/*
 !/log/.keep
 !/tmp/.keep
 /.byebug_history
-
+!/tmp/cache/*
