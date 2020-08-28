@@ -58,6 +58,7 @@ GEM
     builder (3.2.4)
     byebug (11.1.1)
     concurrent-ruby (1.1.6)
+    connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -133,6 +134,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.2.1)
     rspec-core (3.9.1)
       rspec-support (~> 3.9.1)
     rspec-expectations (3.9.0)
@@ -152,6 +154,10 @@ GEM
     rspec-support (3.9.2)
     ruby_dep (1.5.0)
     safe_yaml (1.0.5)
+    sidekiq (6.1.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -189,7 +195,9 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 5.2.4, >= 5.2.4.1)
+  redis (~> 4.0)
   rspec-rails (~> 3.9.0)
+  sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
