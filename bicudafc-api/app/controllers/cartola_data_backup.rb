@@ -2,42 +2,43 @@ class CartolaDataBackup < ApplicationController
   include HTTParty
   base_uri "https://api.cartolafc.globo.com/"
 
-  def get_data(endpoint, *storage_path, file_name)
+  def get_data_rounds(endpoint, file_name)
     response = self.class.get(endpoint, format: :plain)
-    backup_data(storage_path, file_name, response)
+    root = Rails.root.join('vendor')
+
+    file_path = "#{root}/bkp/#{file_name}.json"
+
+    backup_data(response, file_path) 
+  end
+
+  def get_other_data(endpoint, file_name, *round_dir_path)
+
+    response = self.class.get(endpoint, format: :plain)
+
+    response = clubs_serie_a(response) if endpoint == '/clubes'
+
+    root = Rails.root.join('vendor')
+
+    file_path = "#{root}/bkp/#{round_dir_path[0]}/#{file_name}.json"
+
+    backup_data(response, file_path) if !File.file?(file_path)
   end
 
   private
 
-  def backup_data(storage_path, file_name, content)
-    current_file = "#{Rails.root.join('vendor')}/bkp/#{file_name}.json"
-    
-    if !File.file?(current_file)
-      storage_path.empty? ? file = File.new("#{Rails.root.join('vendor')}/bkp/#{file_name}.json", "w") : file = File.new("#{Rails.root.join('vendor')}/bkp/#{storage_path[0]}#{file_name}.json", "w")
-      file.puts(content)
-      file.close
-      puts 'Backup de realizado com sucesso!'
-    else
-      storage_path.empty? ? new_file = File.new("#{Rails.root.join('vendor')}/bkp/#{file_name}_new.json", "w") : new_file = File.new("#{Rails.root.join('vendor')}/bkp/#{storage_path[0]}#{file_name}_new.json", "w")
-      new_file.puts(content)
-      new_file.close
-      puts 'Backup do novo arquivo realizado com sucesso!'
-      versioning_file(file_name)
+  def clubs_serie_a(clubs)
+    clubs_serie_a = []
+    clubs_parsed = JSON.parse clubs, symbolize_names: true
+    clubs_parsed.each do |club|
+      clubs_serie_a << club if club[1][:posicao]
     end
+    clubs_serie_a.to_json
   end
 
-  def versioning_file(file_name)
-    current_path = "#{Rails.root.join('vendor')}/bkp/#{file_name}.json"
-    new_path = "#{Rails.root.join('vendor')}/bkp/#{file_name}_new.json"
-
-    current_file = File.read(current_path)
-    new_file = File.read(new_path)
-
-    delete_rename_file(current_path, new_path) unless current_file == new_file
-  end
-
-  def delete_rename_file(old_path, new_path)
-    File.delete(old_path)
-    File.rename(new_path, new_path=old_path)
+  def backup_data(content, file_path)
+    file = File.new(file_path, 'w')
+    file.puts(content)
+    file.close
+    puts 'Backup de realizado com sucesso!'
   end
 end
