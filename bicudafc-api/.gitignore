@@ -5,3 +5,6 @@
 !/tmp/.keep
 /.byebug_history
 !/tmp/cache/*
+/dump.rdb
+/.bundle
+/tmp
