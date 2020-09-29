@@ -3,33 +3,50 @@ class ImportCartolaDataJob < ApplicationJob
 
   def perform(*args)
     @cartola = CartolaDataBackup.new
-    @rounds_file = "#{Rails.root.join('vendor')}/bkp/rounds.json"
-    File.file?(@rounds_file) ? rounds_data_updated?('/rodadas', 'rounds') : rounds_data('/rodadas', 'rounds')
+    rounds_data('/rodadas', 'rounds')
+    see_current_round
   end
 
   private
 
-  def rounds_data_updated?(endpoint, file)
-    @cartola.get_data(endpoint, file)
+  def rounds_data(endpoint, file_name)
+    @cartola.get_data_rounds(endpoint, file_name)
   end
 
-  def rounds_data(endpoint, *storage_path, file_name)
-    @cartola.get_data(endpoint, *storage_path, file_name)
-    see_current_round(@rounds_file)
-  end
-
-  def see_current_round(file)
-    current_date = Date.today
-    rounds = File.read(file)
+  def see_current_round
+    current_date = DateTime.now
+    rounds = File.read("#{Rails.root.join('vendor')}/bkp/rounds.json")
     rounds_parsed = JSON.parse rounds, symbolize_names: true
 
-    rounds_parsed.each do |round|
-      round_start_date = Date.parse(round[:inicio])
-      make_directory(round) if current_date >= round_start_date - 4.days
+    rounds_parsed.each_with_index do |round, index|
+      prev_round = rounds_parsed.to_a[index - 1]
+      next_round = rounds_parsed.to_a[index + 1]
+      round_start_date = DateTime.parse(round[:inicio])
+
+      make_directory(round) if current_date > prev_round[:fim] && current_date < next_round[:inicio]
+
     end
   end
 
   def make_directory(round)
-    Dir.mkdir "#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}" unless File.directory?("#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}")
+    directory_by_round = "#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}"
+    Dir.mkdir directory_by_round unless File.directory?(directory_by_round)
+
+    round_dir_path = "round_#{round[:rodada_id].to_s}"
+    clubs_data_backup(round_dir_path)
+    players_data_backup(round_dir_path)
+    matches_data_backup(round_dir_path)
+  end
+
+  def clubs_data_backup(round_dir_path)
+    @cartola.get_other_data('/clubes', 'clubs', round_dir_path)
+  end
+
+  def players_data_backup(round_dir_path)
+    @cartola.get_other_data('/atletas/mercado', 'players', round_dir_path)
+  end
+
+  def matches_data_backup(round_dir_path)
+    @cartola.get_other_data('/partidas', 'matches', round_dir_path)
   end
 end
