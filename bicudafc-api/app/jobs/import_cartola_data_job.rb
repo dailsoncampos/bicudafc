@@ -1,17 +1,11 @@
 class ImportCartolaDataJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    @cartola = CartolaDataBackup.new
-    rounds_data('/rodadas', 'rounds')
-    see_current_round
+  def perform
+    @cartola = CartolaDataBackup.new('/rodadas', 'rounds')
   end
 
   private
-
-  def rounds_data(endpoint, file_name)
-    @cartola.get_data_rounds(endpoint, file_name)
-  end
 
   def see_current_round
     current_date = DateTime.now
@@ -22,9 +16,7 @@ class ImportCartolaDataJob < ApplicationJob
       prev_round = rounds_parsed.to_a[index - 1]
       next_round = rounds_parsed.to_a[index + 1]
       round_start_date = DateTime.parse(round[:inicio])
-
-      make_directory(round) if current_date > prev_round[:fim] && current_date < next_round[:inicio]
-
+      make_directory(round) if round[:rodada_id] == 1 || current_date > prev_round[:fim] && current_date < next_round[:inicio]
     end
   end
 
