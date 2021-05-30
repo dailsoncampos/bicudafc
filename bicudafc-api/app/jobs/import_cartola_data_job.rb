@@ -2,14 +2,17 @@ class ImportCartolaDataJob < ApplicationJob
   queue_as :default
 
   def perform
-    @cartola = CartolaDataBackup.new('/rodadas', 'rounds')
+    CartolaDataBackup.new.get_rounds
   end
 
   private
 
+  # move this method to CartolaDataBackup class
   def see_current_round
     current_date = DateTime.now
-    rounds = File.read("#{Rails.root.join('vendor')}/bkp/rounds.json")
+    if File.file?("#{Figaro.env.backup_path}/cartola/seasons/#{current_date.year}/rounds.json")
+      rounds = File.read("#{Figaro.env.backup_path}/cartola/seasons/#{current_date.year}/rounds.json")
+    end
     rounds_parsed = JSON.parse rounds, symbolize_names: true
 
     rounds_parsed.each_with_index do |round, index|
