@@ -1,4 +1,5 @@
 /log/*
+/log/development.log
 !/tmp/*
 !/log/.keep
 !/tmp/.keep
@@ -8,3 +9,4 @@
 /.bundle
 /tmp
 /.vscode
+/vendor/bundle
