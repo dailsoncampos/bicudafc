@@ -1,23 +1,18 @@
+# frozen_string_literal: true
+
 class Folder
   def initialize(params)
     @season = look_season(params[:content])
-    @backup_path = @backup_path
+    @backup_path = params[:backup_path]
     @file_name = params[:file_name]
   end
 
   def make
-    debugger
-    case
-    when !File.directory?("#{@backup_path}/seasons")
-      Dir.mkdir "#{@backup_path}/seasons"
-
-    when !File.directory?("#{@backup_path}/seasons/#{@season}")
-      Dir.mkdir "#{@backup_path}/seasons/#{@season}"
-
-    else
-      raise ArgumentError "Erro ao criar diretório"
-    end
-  rescue => e
+    Dir.mkdir "#{@backup_path}/cartola" unless File.directory?("#{@backup_path}/cartola")
+    Dir.mkdir "#{@backup_path}/cartola/seasons" unless File.directory?("#{@backup_path}/cartola/seasons")
+    Dir.mkdir "#{@backup_path}/cartola/seasons/#{@season}" unless File.directory?("#{@backup_path}/cartola/seasons/#{@season}")
+    current_season = "#{@backup_path}/cartola/seasons/#{@season}"
+  rescue StandardError => e
     puts "Ocorreu o seguinte erro ao tentar criar diretório: #{e.message}"
   end
 
