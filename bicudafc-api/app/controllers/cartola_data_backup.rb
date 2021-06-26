@@ -4,14 +4,12 @@ class CartolaDataBackup < ApplicationController
 
   def get_rounds
     content = self.class.get('/rodadas', format: :plain)
-    main_file = build_path('rounds')
+    main_file = build_path('rounds', content)
     write_file(content, main_file) unless File.file?(main_file)
   end
 
   def get_other_data(endpoint, file_name, *round_dir_path)
     response = self.class.get(endpoint, format: :plain)
-
-    # response = clubs_serie_a(response) if endpoint == '/clubes'
 
     root = Rails.root.join('vendor')
 
@@ -22,7 +20,7 @@ class CartolaDataBackup < ApplicationController
 
   private
 
-  def build_path(file_name)
+  def build_path(file_name, content)
     current_season = Folder.new({backup_path: Figaro.env.backup_path, content: content, file_name: file_name}).make
     file_path = "#{current_season}/#{file_name}.json"
   end
