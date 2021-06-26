@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Create folders to JSON file's backup
 class Folder
   def initialize(params)
     @season = look_season(params[:content])
@@ -8,10 +9,10 @@ class Folder
   end
 
   def make
-    Dir.mkdir "#{@backup_path}/cartola" unless File.directory?("#{@backup_path}/cartola")
-    Dir.mkdir "#{@backup_path}/cartola/seasons" unless File.directory?("#{@backup_path}/cartola/seasons")
-    Dir.mkdir "#{@backup_path}/cartola/seasons/#{@season}" unless File.directory?("#{@backup_path}/cartola/seasons/#{@season}")
-    current_season = "#{@backup_path}/cartola/seasons/#{@season}"
+    Dir.mkdir Figaro.env.cartola_dir.to_s unless File.directory?(Figaro.env.cartola_dir.to_s)
+    Dir.mkdir Figaro.env.seasons_dir.to_s unless File.directory?(Figaro.env.seasons_dir.to_s)
+    Dir.mkdir "#{Figaro.env.seasons_dir}/#{@season}" unless File.directory?("#{Figaro.env.seasons_dir}/#{@season}")
+    "#{Figaro.env.seasons_dir}/#{@season}"
   rescue StandardError => e
     puts "Ocorreu o seguinte erro ao tentar criar diretório: #{e.message}"
   end
