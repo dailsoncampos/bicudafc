@@ -1,4 +1,4 @@
 import_cartola_data:
-  cron: "*/30 * * * *"
+  cron: "*/2 * * * *"
   class: "ImportCartolaDataJob"
   queue: "default"

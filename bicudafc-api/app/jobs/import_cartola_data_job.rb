@@ -1,41 +1,48 @@
+# frozen_string_literal: true
+
+# Start all process
 class ImportCartolaDataJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    @cartola = CartolaDataBackup.new
-    rounds_data('/rodadas', 'rounds')
-    see_current_round
+  def perform
+    start_process if Market.new.status_opened?
   end
 
   private
 
-  def rounds_data(endpoint, file_name)
-    @cartola.get_data_rounds(endpoint, file_name)
+  def start_process
+    CartolaDataBackup.new.get_rounds
+    parsing_in_the_rounds if rounds_file_created?
   end
 
-  def see_current_round
-    current_date = DateTime.now
-    rounds = File.read("#{Rails.root.join('vendor')}/bkp/rounds.json")
-    rounds_parsed = JSON.parse rounds, symbolize_names: true
+  # move this method to CartolaDataBackup class
+  def rounds_file_created?
+    @current_date = DateTime.now
+    if File.file?("#{Figaro.env.seasons_dir}/#{@current_date.year}/rounds.json")
+      @rounds = File.read("#{Figaro.env.seasons_dir}/#{@current_date.year}/rounds.json")
+    end
+    @rounds.present? ? true : false
+  end
 
+  def parsing_in_the_rounds
+    rounds_parsed = JSON.parse @rounds, symbolize_names: true
     rounds_parsed.each_with_index do |round, index|
-      prev_round = rounds_parsed.to_a[index - 1]
-      next_round = rounds_parsed.to_a[index + 1]
-      round_start_date = DateTime.parse(round[:inicio])
-
-      make_directory(round) if current_date > prev_round[:fim] && current_date < next_round[:inicio]
-
+      prev_round = rounds_parsed.to_a[index - 1] unless round[:rodada_id] == 1
+      next_round = rounds_parsed.to_a[index + 1] unless round[:rodada_id] == 38
+      if (prev_round.blank? || @current_date > prev_round[:fim]) && (next_round.present? || @current_date < next_round[:inicio])
+        make_directory(round)
+      end
     end
   end
 
   def make_directory(round)
-    directory_by_round = "#{Rails.root.join('vendor')}/bkp/round_#{round[:rodada_id].to_s}"
+    directory_by_round = "#{Figaro.env.seasons_dir}/#{@current_date.year}/round_#{round[:rodada_id]}"
     Dir.mkdir directory_by_round unless File.directory?(directory_by_round)
 
-    round_dir_path = "round_#{round[:rodada_id].to_s}"
-    clubs_data_backup(round_dir_path)
-    players_data_backup(round_dir_path)
-    matches_data_backup(round_dir_path)
+    # round_dir_path = "round_#{round[:rodada_id].to_s}"
+    # clubs_data_backup(round_dir_path)
+    # players_data_backup(round_dir_path)
+    # matches_data_backup(round_dir_path)
   end
 
   def clubs_data_backup(round_dir_path)

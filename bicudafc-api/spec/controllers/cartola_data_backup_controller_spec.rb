@@ -17,7 +17,13 @@ RSpec.describe CartolaDataBackupController, type: :controller do
       expect(result).to include("fim" => match("2019-05-02 20:00:00"))
     end
 
-    it 'verifies if the file is saved in vendor directory' do
+    it 'verifies if the file is saved in temporary directory' do
+    end
+
+    it 'verifies if the file is not blank' do
+    end
+
+    it 'verifies if the first round was created' do
     end
   end
 end

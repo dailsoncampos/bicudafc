@@ -1,0 +1,5 @@
+development:
+  backup_path: "tmp/storage"
+  cartola_dir: "tmp/storage/cartola"
+  seasons_dir: "tmp/storage/cartola/seasons"
+  
