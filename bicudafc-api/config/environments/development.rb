@@ -51,4 +51,15 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Specify the AWS configuration variables
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: Figaro.env.s3_bucket_name.to_s,
+      access_key_id: Figaro.env.aws_access_key_id.to_s,
+      secret_access_key: Figaro.env.aws_secret_access_key.to_s,
+      s3_region: Figaro.env.aws_region.to_s
+    }
+  }
 end
