@@ -43,6 +43,12 @@ gem 'httparty', '~> 0.13.7'
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro', '~> 1.2'
 
+# Easy upload management for ActiveRecord
+gem 'paperclip', '~> 6.1'
+
+# The official AWS SDK for Ruby. Provides both resource oriented interfaces and API clients for AWS services.
+gem 'aws-sdk', '~> 3.0', '>= 3.0.2'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.9.0'
@@ -50,7 +56,9 @@ group :development, :test do
   # gem "fakefs", require: "fakefs/safe"
 
   # RuboCop is a Ruby code style checking and code formatting tool. It aims to enforce the community-driven Ruby Style Guide.
-  gem 'rubocop', '~> 1.15'
+  gem 'rubocop'
+  # Tool that examines Ruby classes, modules and methods and reports any code smells it finds.
+  gem 'reek'
 
   gem 'factory_bot_rails'
   gem 'vcr', '~> 3.0', '>= 3.0.1'
