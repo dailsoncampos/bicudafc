@@ -38,7 +38,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'rack-cors'
 
 # Makes http fun! Also, makes consuming restful web services dead easy.
-gem 'httparty', '~> 0.13.7'
+gem 'httparty', '~> 0.21.0'
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro', '~> 1.2'
